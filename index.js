@@ -5,6 +5,12 @@ const express = require('express'),
   nunjucks = require('nunjucks');
 
 app = express();
+// res.sendFile(__dirname + '/index.html');});
+// app.get('/', function (req, res) {
+//   res.sendFile(__dirname + '/index.html');
+// });
+// app.use(express.static(__dirname + 'public'));
+// app.listen(3000);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
@@ -77,12 +83,7 @@ MongoClient.connect('mongodb://localhost:27017/DATABASEEEEEHERE', function (err,
 
 ///////////////////////////////////////////////////
   router.get('/login', (req, res) => {
-    // let pagename = req.params.pagename;
 
-    // pagename = pagename === 'signup' ? 'home' : pagename;
-
-
-    // res.redirect('/'+ pagename);
     res.render('login');
   });
   router.get('/login/:pagename', (req, res) => {
@@ -97,8 +98,10 @@ MongoClient.connect('mongodb://localhost:27017/DATABASEEEEEHERE', function (err,
   router.get('/login/vote/:pagename', (req, res) => {
     let pagename = req.params.pagename;
     pagename = 'vote/' + pagename;
-
-    res.render('login', { pagename: pagename});
+    console.log('/voat/:pagename', pagename);
+   // ,{ pagename: pagename }
+    res.render('login');
+    //res.render('login');
   });///:pagename
   router.post('/login/:url(*)', (req, res) => {
     let pagename = req.params.url;
@@ -124,9 +127,7 @@ MongoClient.connect('mongodb://localhost:27017/DATABASEEEEEHERE', function (err,
 
 
   });
-   // prob need a post------------
-  //
-  //
+
 //////////////////////////////////////////////////////////////
   router.get('/vote/:pollname',(req,res) => {
     const pollname = req.params.pollname;
@@ -141,11 +142,6 @@ MongoClient.connect('mongodb://localhost:27017/DATABASEEEEEHERE', function (err,
 
   })
 
-
-
-
-
-  
   app.use('/', router);
 
   // Start the server listening

@@ -400,6 +400,11 @@ body {
   margin: 0; }
 
 nav {
+  margin: 10px;
   display: flex; }
+  nav * {
+    margin: 0 15px; }
+  nav.heading {
+    margin: 0; }
 
 /*# sourceMappingURL=main.css.map */

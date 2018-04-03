@@ -1,6 +1,15 @@
 
 
 nav {
-
+  margin: 10px;
   display: flex;
+  * { 
+    margin: 0 15px;
+  }
+  &.heading {
+  margin: 0;
+  }
+
 }
+
+

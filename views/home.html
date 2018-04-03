@@ -1,31 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel= "stylesheet" href="../static/style/css/main.css" >
-    <title>Document</title>
-</head>
-<body>
-    
+{% extends "base.html" %}
+
+{% block content %}
+
 
 
 
 <div class="container">
-       <nav><h3>VoteNoWer</h3><a href="/">Home</a><a href="/signup">Sign Up</a><a href="/login">Login</a></nav>
 
-  <div class="title-wrapper">VoteNoWer
-    <h1>Public Polls</h1>
+
+  <div class="title-wrapper">
+    <h1></h1>VoteNoWOmatic</h1> 
+    <h3>Public Polls</h3>
     <h6>Select a poll to vote or Sign up To create your own</h6>
   </div>
+     {% if (username) %}  
+      <h3/>Welcome: {{username}}</h3>
+     {% endif %}
 
-
+  <ul><li><a href="/vote/{{pollname}}">pollnameherewithtemplates</a></li></ul>
 
 
 </div>
-
-    <script src="../static/js/app.js"></script>
-
-</body>
-</html>
+{% endblock %}

@@ -1,4 +1,16 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+
+
+{% block content %}
 <h2>Create Poll</h2>
+
+<form action="/createpoll" method="post">
+  <label for="title">Title</label>
+  <input type="text" name="title">
+  <label for="options"></label>
+  <input type="text" name="options"><button>Add Options</button>
+
+  <button type="submit">Submit</button>
+</form>
 
 {% endblock %}

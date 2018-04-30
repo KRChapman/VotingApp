@@ -4,11 +4,16 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       assert = require('assert'),
       nunjucks = require('nunjucks'),
-      {checkForError, checkForAutherization} = require('./utils/helper.js'),
+      {checkForError, 
+      checkForAutherization} = require('./utils/helper.js'),
       // mongoose = require('mongoose');
+
       session = require('express-session'),
       MongoStore = require('connect-mongo')(session),
+      formidable = require('formidable'),
+
       {User} = require('./models/users'),
+      {Poll} = require('./models/polls'),
       {mongoose} = require('./db/mongoo');
 // console.log(User);
 
@@ -26,7 +31,7 @@ app.set('views', __dirname + '/views');
 
 app.use(session({
   secret: 'work with hard on',
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   //put the session in the database with connect-mongo
   store: new MongoStore({
@@ -34,11 +39,15 @@ app.use(session({
   })
 }));
 
+// ttl: 14 * 24 * 60 * 60 // = 14 days. Default
+
+
 
 
 //use mostly i think?
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json()); can I use both?
+app.use(bodyParser.json());
+// can I use both?
 
 app.use('/static', express.static(__dirname + '/static'));
 
@@ -61,16 +70,20 @@ let env = nunjucks.configure('views', {
 
  
   router.get('/', (req,res) =>{
-    res.render('home', { pagename: 'home' });
-   // res.redirect('/home');
+     res.redirect('/home');
+  
+    // res.render('home', { pagename: 'home' });
+  
+    
   } )
 
   router.get('/home', function (req, res) {
-
+  //  let username = (req.session.username == null) ? null : req.session.username;
+    let username = req.session.username;
     // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: false });
   //  let cookie = req.session.id;
-
-    res.render('home', {pagename: 'home'});
+    // checkForAutherization(req.session);
+    res.render('home', { pagename: 'home', username });
 
   });
 
@@ -85,11 +98,12 @@ let env = nunjucks.configure('views', {
 
   });
   router.post('/signup', (req, res, next) => {
+    const email = req.body.email;
     const username = req.body.username;
     const passwords = req.body.password;
 
 
-    
+    // const emailError = (email === '') ? 'email field is blank' : '';
     const usernameError = (username === '')? 'user name field is blank': '';
     const passwordError = (passwords[0] !== passwords[1] || 
                          passwords[0] == "" && passwords[1] == "")? 'Passwords do not match' : '';
@@ -122,21 +136,23 @@ let env = nunjucks.configure('views', {
       //this way you could pass the object to a function before saving
       // or modify it in other ways before saving
       let userData = new User ({
+        email,
         username,
         password: passwords[0]
 
       })
       userData.save().then((doc) => {
-        console.log('saved todo', doc);
+
+        req.session.username = doc.username;
         req.session.userId = doc._id;
-        console.log('req.session', req.session);
+       
         res.render('home', { username });
       }, e => {
         
         if(e.code === 11000){
           var e = new Error('duplicate username');
           e.status = 400;
-          console.log("err", e);
+          console.log(e);
           errors.usernameError = 'duplicate username'
           return res.render('signup', errors);
         }     
@@ -183,6 +199,7 @@ let env = nunjucks.configure('views', {
   });///:pagename
   router.post('/login/:url(*)', (req, res) => {
     let pagename = req.params.url;
+    const email = req.body.email;
     const username = req.body.username;
     const password = req.body.password;
     // console.log("pagename post", pagename);
@@ -191,23 +208,23 @@ let env = nunjucks.configure('views', {
     // const passwordError = (passwords[0] !== passwords[1] ||
     //   passwords[0] == "" && passwords[1] == "") ? 'Passwords do not match' : '';
     const usernameError = (username === '') ? 'user name field is blank' : '';
-    let passwordError = "";// look in db for pass return error if not found
+ 
 
     
-    const errors = { usernameError, passwordError };
+    const errors = { usernameError};
     if (!checkForError(errors)) {
       let pagenameTest = '/' + test;
       
-      User.authenticate(username, password, function (err, userDoc){
-        debugger;
+      User.authenticate(email, password, function (err, userDoc){
+      
         if(err){
-          console.log('authenticate static error', err.message);
-          errors.usernameError = err.message;
+          errors.passwordError = err.message;
           res.render('login', errors);
         // return next(err);
         }
         else{
           req.session.userId = userDoc._id;
+          req.session.username = userDoc.username;
           res.redirect(pagenameTest);
         }
      
@@ -221,7 +238,7 @@ let env = nunjucks.configure('views', {
   });
 
 //////////////////////////////////////////////////////////////
-  router.get('/vote/:pollname',function goTopollPage(req,res) {
+  router.get('/vote/:pollname',function goToPollPage(req,res) {
     const pollname = req.params.pollname;
     let pagename = `vote/${pollname}`;
     res.render('vote', { pagename: pagename, pollname: pollname});
@@ -229,11 +246,60 @@ let env = nunjucks.configure('views', {
   })
 
 router.get('/createpoll', (req, res) => {
-
-  res.render('createpoll');
+  let jsFile = "createpoll";
+  let username = req.session.username;
+  res.render('createpoll', {username, jsFile});
 
 });
 router.post('/createpoll', (req, res)  => {
+  var form = new formidable.IncomingForm()
+
+
+
+ // let title = req.body.title;
+
+ // console.log("req.body.options", req.body.options);
+ let options = req.body.options; // function that creates array of objects
+ let userId = req.session.userId;
+
+
+  
+
+
+    let userPoll = new Poll({
+      title: req.body.title,
+      // options: req.body.options,
+      // userId
+    });
+   
+    options.forEach(element => {
+      userPoll.options.push({ optionTitle: element })
+    });
+    
+    userPoll.save().then(doc => {
+      let linkToPoll = '/poll' + userId.toString();
+      res.send(linkToPoll);
+      // res.json(linkToPoll)
+    }, e => console.log(e))
+ 
+
+
+
+
+})
+
+router.get('/logout', (req, res) => {
+  if (req.session) {
+    console.log("req.session", req.session);
+    req.session.destroy(function (err) {
+      console.log("err", err);
+      if (err) {
+        return next(err);
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }
 
 })
 

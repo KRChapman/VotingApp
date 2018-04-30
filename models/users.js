@@ -4,6 +4,13 @@ const bcrypt = require('bcrypt');
 let collection = 'Users';
 
 let UserSchema = new mongoose.Schema( {
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+    minlength: 1
+  },
   username: {
     type: String,
     required: true,
@@ -34,9 +41,9 @@ UserSchema.pre('save', function (next) {
 //authenticate input against database
 
 
-UserSchema.statics.authenticate = function (userName, password, callback) {
+UserSchema.statics.authenticate = function (email, password, callback) {
   
-  this.findOne({ username: userName })
+  this.findOne({ email: email })
     .exec(function (err, user) {
      
       if (err) {
@@ -46,9 +53,9 @@ UserSchema.statics.authenticate = function (userName, password, callback) {
         err.status = 401;
         return callback(err);
       }
-      debugger;
+   
       bcrypt.compare(password, user.password, function (err, result) {
-        debugger;
+      
         if (result === true) {
           return callback(null, user);
         } else {

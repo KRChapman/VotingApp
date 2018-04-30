@@ -4,12 +4,19 @@
 {% block content %}
 <h2>Create Poll</h2>
 
-<form action="/createpoll" method="post">
+<form action="/createpoll" method="post" class="create-poll">
   <label for="title">Title</label>
-  <input type="text" name="title">
-  <label for="options"></label>
-  <input type="text" name="options"><button>Add Options</button>
+  <input type="text" name="title" id="uname" required>
+  <ul>
+    <li>
+        <label for="options">Option:</label>
+        <input type="text" name="options" class= "option-input">
+    </li>
+  </ul>
 
+ 
+  <button class="options-button">Add Options</button>
+ 
   <button type="submit">Submit</button>
 </form>
 

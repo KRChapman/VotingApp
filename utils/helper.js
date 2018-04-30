@@ -1,21 +1,25 @@
-const { mongoose } = require('./../db/mongoo');
+const { mongoose } = require('./../db/mongoo'),
+      { User } = require('./../models/users');
 
 
 let checkForError = (errorObj) => {
-  //  console.log("errorObj", errorObj)
+ 
   let errorExist;
   for (const iterator in errorObj) {
-    //console.log("iterator", errorObj[iterator]);
     errorExist = (errorObj[iterator] === '' && errorExist != true) ? false : true;
-    //console.log("errorExist", errorObj[iterator]);
   }
 
   return errorExist
 }
 
 
-let checkForAutherization = () => {
-  
+let checkForAutherization = (sessionObj) => {
+  //req.sessionID
+  console.log("sessionObj.id", sessionObj.id);
+  console.log("sessionObj.userId", sessionObj.userId);
+  //USE PROMISES
+  // Session.findOne({})
+ 
 }
 
 module.exports = { checkForError, checkForAutherization};

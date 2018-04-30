@@ -5,6 +5,8 @@
 <h2>Sign Up</h2>
 
 <form action="/signup" method="post">
+  <label for="email">Email</label>
+  <input type="email" name="email" required="">
   <label for="username">Username</label>
   <input type="text" name="username">
   <label for="password">Create Password</label>
@@ -13,7 +15,7 @@
   <input type="text" name="password">
   <button type="submit">submit</button>
 </form>
-{{usernameError}}{{passwordError}}
+{{emailError}}{{usernameError}}{{passwordError}}
 
 
 

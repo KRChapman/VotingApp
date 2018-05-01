@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-let ObjectId = mongoose.Schema.Types.ObjectId;
+// let ObjectId = mongoose.Schema.Types.ObjectId;
+// userId: ObjectId
 let collection = 'Polls';
 
 let nestedOptions = new mongoose.Schema({
@@ -17,7 +18,13 @@ let PollSchema = new mongoose.Schema({
 
   options: [nestedOptions],
  // https://stackoverflow.com/questions/37089695/define-array-of-objects-based-on-a-mongoose-schema
-  userId: ObjectId
+  userName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1
+  },
+
 
 });
 

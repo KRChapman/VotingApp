@@ -49,7 +49,7 @@ pollForm.addEventListener('submit', function (e) {
   let url = '/createpoll';
 
   let reqObj = {
-  
+    credentials: 'include',
     // no-cors header option chabges are limited
     // need cors for changing headers
     mode: 'cors',
@@ -58,10 +58,33 @@ pollForm.addEventListener('submit', function (e) {
     headers: { "Content-Type": "application/json" } 
     
   }
+                                              //or text
+  fetch(url, reqObj).then(response => response.json()).then(data => {
+    let formDiv = document.querySelector('.form-container');
+    let form = document.querySelector('.create-poll');
+    let pollTitle = document.querySelector(".poll-title");
 
-  fetch(url, reqObj).then(response => response.text()).then(data => {
+    let divBlock = document.createElement('div');
+    divBlock.classList.add("poll-link");
 
-    console.log(data);
+    let link = document.createElement('a');
+
+                //entire link               //   /createpoll
+    let index = window.location.href.indexOf(window.location.pathname);
+    let startOfLinkHost = window.location.href.substring(0, index);
+    console.log("startOfLinkHost", startOfLinkHost);
+
+    let dataLink = `${startOfLinkHost}/vote/${data.pollName}?username=${data.userName}`;
+    console.log("startOfLinkHost", dataLink);
+    link.textContent = dataLink;
+    link.setAttribute('href', dataLink);
+
+    divBlock.appendChild(link);
+
+   
+    pollTitle.textContent = "Poll Link"
+    let replacedNode = formDiv.replaceChild(divBlock, form);
+    console.log(data.userId);
 
 
   })

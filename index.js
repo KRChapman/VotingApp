@@ -70,6 +70,7 @@ let env = nunjucks.configure('views', {
 
  
   router.get('/', (req,res) =>{
+  
      res.redirect('/home');
   
     // res.render('home', { pagename: 'home' });
@@ -223,8 +224,10 @@ let env = nunjucks.configure('views', {
         // return next(err);
         }
         else{
+          
           req.session.userId = userDoc._id;
           req.session.username = userDoc.username;
+        //  console.log(req.session.userId);
           res.redirect(pagenameTest);
         }
      
@@ -252,15 +255,9 @@ router.get('/createpoll', (req, res) => {
 
 });
 router.post('/createpoll', (req, res)  => {
-  var form = new formidable.IncomingForm()
 
-
-
- // let title = req.body.title;
-
- // console.log("req.body.options", req.body.options);
- let options = req.body.options; // function that creates array of objects
- let userId = req.session.userId;
+ let options = req.body.options;
+  let userName = req.session.username;
 
 
   
@@ -268,8 +265,7 @@ router.post('/createpoll', (req, res)  => {
 
     let userPoll = new Poll({
       title: req.body.title,
-      // options: req.body.options,
-      // userId
+      userName
     });
    
     options.forEach(element => {
@@ -277,8 +273,16 @@ router.post('/createpoll', (req, res)  => {
     });
     
     userPoll.save().then(doc => {
-      let linkToPoll = '/poll' + userId.toString();
-      res.send(linkToPoll);
+      
+    //  let userIdString = userId.toString();
+      
+      //'poll' +
+      let resObj ={
+        pollName: req.body.title,
+        userName
+      }
+
+      res.send(resObj);
       // res.json(linkToPoll)
     }, e => console.log(e))
  

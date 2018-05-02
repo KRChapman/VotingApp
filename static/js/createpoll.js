@@ -75,7 +75,7 @@ pollForm.addEventListener('submit', function (e) {
     let startOfLinkHost = window.location.href.substring(0, index);
     console.log("startOfLinkHost", startOfLinkHost);
 
-    let dataLink = `${startOfLinkHost}/vote/${data.pollName}?username=${data.userName}`;
+    let dataLink = `${startOfLinkHost}/vote/${data.title}?username=${data.userName}`;
     console.log("startOfLinkHost", dataLink);
     link.textContent = dataLink;
     link.setAttribute('href', dataLink);

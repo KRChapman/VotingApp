@@ -258,7 +258,8 @@ function requiresLogin(req, res, next) {
   router.get('/vote/:pollname',function goToPollPage(req,res) {
     const pollname = req.params.pollname;
     let pagename = `vote/${pollname}`;
-    res.render('vote', { pagename: pagename, pollname: pollname});
+    let username = req.session.username;
+    res.render('vote', { pagename: pagename, pollname: pollname, username});
 
   })
 
@@ -288,12 +289,9 @@ router.post('/createpoll', (req, res)  => {
     });
     
     userPoll.save().then(doc => {
-      
-    //  let userIdString = userId.toString();
-      
-      //'poll' +
+     
       let resObj ={
-        pollName: req.body.title,
+        title: doc.title,  //req.body.title,
         userName
       }
 
@@ -311,13 +309,23 @@ router.post('/createpoll', (req, res)  => {
 router.post('/mypolls', (req, res) =>{
   let username = req.session.username;
   let bod = req.body;
-  console.log(username);
-  console.log(bod);
+  // console.log(username);
+  // console.log(bod);
 
   Poll.find({ userName: username}).then(doc => res.send(doc));
 })
 
-//router.delete()
+router.delete('/deletepoll', function(req, res){
+  console.log(req.body.userName);
+
+  console.log(req.body.title);
+  let query = Poll.find().remove({ title: req.body.title, userName: req.body.userName })
+  // Poll.deleteOne({ title: req.body.title, userName: req.body.userName }, (doc) =>{
+  //   console.log("doc",doc);
+  // })
+  // executed without a callback
+  query.exec();
+})
 
 router.get('/logout', (req, res) => {
   if (req.session) {

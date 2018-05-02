@@ -65,11 +65,24 @@ let env = nunjucks.configure('views', {
   app.use('/', router);
 
 
+function requiresLogin(req, res, next) {
 
+  if (req.session && req.session.userId) {
+    return next();
+  } else {
+  // 
+    // var err = new Error('You must be logged in to view this page.');
+    // err.status = 401;
+    res.redirect('/signup');
+    // return next(err);
+  }
+}
 
 
  
   router.get('/', (req,res) =>{
+
+
   
      res.redirect('/home');
   
@@ -78,7 +91,8 @@ let env = nunjucks.configure('views', {
     
   } )
 
-  router.get('/home', function (req, res) {
+  router.get('/home', function (req, res, next) {
+   
   //  let username = (req.session.username == null) ? null : req.session.username;
     let username = req.session.username;
     // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: false });
@@ -227,7 +241,7 @@ let env = nunjucks.configure('views', {
           
           req.session.userId = userDoc._id;
           req.session.username = userDoc.username;
-        //  console.log(req.session.userId);
+    
           res.redirect(pagenameTest);
         }
      
@@ -248,7 +262,8 @@ let env = nunjucks.configure('views', {
 
   })
 
-router.get('/createpoll', (req, res) => {
+router.get('/createpoll', requiresLogin, (req, res, next) => {
+//  requiresLogin(req, res, next);
   let jsFile = "createpoll";
   let username = req.session.username;
   res.render('createpoll', {username, jsFile});
@@ -292,6 +307,18 @@ router.post('/createpoll', (req, res)  => {
 
 })
 
+
+router.post('/mypolls', (req, res) =>{
+  let username = req.session.username;
+  let bod = req.body;
+  console.log(username);
+  console.log(bod);
+
+  Poll.find({ userName: username}).then(doc => res.send(doc));
+})
+
+//router.delete()
+
 router.get('/logout', (req, res) => {
   if (req.session) {
     console.log("req.session", req.session);
@@ -307,6 +334,7 @@ router.get('/logout', (req, res) => {
 
 })
 
+//app.use('/createpoll', requiresLogin);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('File Not Found');

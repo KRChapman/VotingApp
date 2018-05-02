@@ -399,4 +399,7 @@ nav {
   nav.heading {
     margin: 0; }
 
+table {
+  display: inline-block; }
+
 /*# sourceMappingURL=main.css.map */

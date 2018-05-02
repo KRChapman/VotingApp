@@ -49,6 +49,7 @@ pollForm.addEventListener('submit', function (e) {
   let url = '/createpoll';
 
   let reqObj = {
+    // needed for cors to send cookies
     credentials: 'include',
     // no-cors header option chabges are limited
     // need cors for changing headers

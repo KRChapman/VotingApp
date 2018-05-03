@@ -1,8 +1,11 @@
 
+
 let myPollsBtn = document.querySelector('.mypolls-btn');
 
+if (myPollsBtn !=  null){
+  myPollsBtn.addEventListener('click', showMyPolls);
+}
 
-myPollsBtn.addEventListener('click', showMyPolls);
 
 
 function showMyPolls(){
@@ -25,8 +28,7 @@ function showMyPolls(){
 
  
   fetch(url, reqObj).then(response => response.json()).then(data =>{
-    console.log("dataaaaaaaa", data);
-  
+
     renderMyPoll(data);
 
   
@@ -71,7 +73,7 @@ function removeRow() {
     headers: { "Content-Type": "application/json" }
   
   }
-  console.log("req.body", jsonData)
+
   fetch(url, reqObj);
 
 
@@ -151,5 +153,6 @@ function linkToPoll (data){
 
   return dataLink;
 }
+
 
 

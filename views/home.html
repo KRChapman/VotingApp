@@ -16,8 +16,19 @@
      {% if (username) %}  
       <h3/>Welcome: {{username}}</h3>
      {% endif %}
+  <div class-"home-poll-container">
+    <ul class="poll-list">
+       {% for item in listArray %}
+      <li>
+        <a href={{item.link}}>{{item.title}}</a>
+      </li>
+      {% else %}
+      <li>This would display if the 'item' collection were empty</li>
+      {% endfor %}
+    </ul>
 
-  <ul><li><a href="/vote/{{pollname}}">pollnameherewithtemplates</a></li></ul>
+  </div>
+ 
 
 
 </div>

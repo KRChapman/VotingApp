@@ -15,6 +15,8 @@ const express = require('express'),
       {User} = require('./models/users'),
       {Poll} = require('./models/polls'),
       {mongoose} = require('./db/mongoo');
+
+      url = require('url');
 // console.log(User);
 
 app = express();
@@ -92,13 +94,32 @@ function requiresLogin(req, res, next) {
   } )
 
   router.get('/home', function (req, res, next) {
-   
+   let host = req.get('host');
+ 
+   //localhost:3000/home
   //  let username = (req.session.username == null) ? null : req.session.username;
     let username = req.session.username;
-    // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: false });
-  //  let cookie = req.session.id;
-    // checkForAutherization(req.session);
-    res.render('home', { pagename: 'home', username });
+    let http = req.protocol;
+
+    let protocol = `${http}://`;
+    Poll.find({ userName: 'aa' }).exec((err,doc) =>{
+      let listArray = [];
+   
+      //insertAdjacentHtml
+      doc.forEach((element,index) => {
+        let objPolls = {};
+        let link = encodeURIComponent(`${doc[index].title}`);
+        objPolls.link = `${protocol }${ host }/vote/${link}`;
+        objPolls.title =`${doc[index].title}`;
+     // build string then push
+        listArray.push(objPolls);
+      });
+      console.log(listArray)
+      res.render('home', { pagename: 'home', username, listArray });
+
+    })
+
+    
 
   });
 
@@ -320,10 +341,7 @@ router.delete('/deletepoll', function(req, res){
 
   console.log(req.body.title);
   let query = Poll.find().remove({ title: req.body.title, userName: req.body.userName })
-  // Poll.deleteOne({ title: req.body.title, userName: req.body.userName }, (doc) =>{
-  //   console.log("doc",doc);
-  // })
-  // executed without a callback
+
   query.exec();
 })
 

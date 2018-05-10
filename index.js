@@ -17,6 +17,8 @@ const express = require('express'),
       {mongoose} = require('./db/mongoo');
 
       url = require('url');
+
+      port = process.env.PORT || 3000;
 // console.log(User);
 
 app = express();
@@ -102,9 +104,9 @@ function requiresLogin(req, res, next) {
     let http = req.protocol;
 
     let protocol = `${http}://`;
-    Poll.find({ userName: 'aa' }).exec((err,doc) =>{
+    Poll.find().exec((err,doc) =>{
       let listArray = [];
-   
+      
       //insertAdjacentHtml
       doc.forEach((element,index) => {
         let objPolls = {};
@@ -188,7 +190,7 @@ function requiresLogin(req, res, next) {
         if(e.code === 11000){
           var e = new Error('duplicate username');
           e.status = 400;
-          console.log(e);
+      
           errors.usernameError = 'duplicate username'
           return res.render('signup', errors);
         }     
@@ -278,11 +280,67 @@ function requiresLogin(req, res, next) {
 //////////////////////////////////////////////////////////////
   router.get('/vote/:pollname',function goToPollPage(req,res) {
     const pollname = req.params.pollname;
+ //   console.log('first get', pollname);
     let pagename = `vote/${pollname}`;
     let username = req.session.username;
-    res.render('vote', { pagename: pagename, pollname: pollname, username});
+    let jsFile = 'vote'
+    res.render('vote', { pagename: pagename, pollname: pollname, username, jsFile});
 
   })
+router.get('/api/polls/:pollname', (req, res, next) => {
+  let title = req.params.pollname;
+ // let title = req.params.polls;
+
+  Poll.find({ title: title}).then((doc) => {
+  
+    let pollObj = {
+
+    }
+    // for (const key in doc) {
+    //   if (object.hasOwnProperty(key)) {
+    //     pollObj.title = 
+        
+    //   }
+    // }
+//console.log("doc[0].options", doc[0].options);
+    res.json(doc[0].options);
+  }, function(e){
+    console.log(`vote api ${e.message}`, e);
+    next(e);
+  })
+ // 
+})
+
+router.get('/addoption/:addedOption', function(req,res,next){
+  let addedOption = req.params.addedOption;
+  let optionObj = {
+    Votes: 0,
+    optionTitle: addedOption
+  }
+  let title = req.query.pollname;
+  Poll.findOneAndUpdate({ title }, { $push: { options: optionObj } }, {new: true}, function(err, doc){
+     //ADD code TO TEST FOR test for duplicate option
+    if(!err){
+      res.send(doc.options);
+      console.log(doc);
+    }
+    else{
+     
+      next(err);
+    }
+  })
+})
+
+router.get('/voteupdate/:selected', function(req, res, next) {
+  let selectedOption = req.params.selected;
+  let title = req.query.pollname;
+ 
+  //.lean()
+  Poll.findOneAndUpdate({ title: title, 'options.optionTitle': selectedOption }, { $inc: { 'options.$.Votes': 1 } }, { new: true }).lean().exec((err, doc) =>{
+  
+    res.json(doc.options);
+  });
+})
 
 router.get('/createpoll', requiresLogin, (req, res, next) => {
 //  requiresLogin(req, res, next);
@@ -337,9 +395,7 @@ router.post('/mypolls', (req, res) =>{
 })
 
 router.delete('/deletepoll', function(req, res){
-  console.log(req.body.userName);
 
-  console.log(req.body.title);
   let query = Poll.find().remove({ title: req.body.title, userName: req.body.userName })
 
   query.exec();
@@ -347,7 +403,7 @@ router.delete('/deletepoll', function(req, res){
 
 router.get('/logout', (req, res) => {
   if (req.session) {
-    console.log("req.session", req.session);
+
     req.session.destroy(function (err) {
       console.log("err", err);
       if (err) {
@@ -381,7 +437,7 @@ app.use(function (err, req, res, next) {
      //for testing with nodemon it tries to connect more than once while testing
   if (!module.parent) {
  
-    let port = 3000;
+   
     app.listen(port);
     console.log('server listening on port %s.', port);
   }

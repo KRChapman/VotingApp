@@ -1,0 +1,52 @@
+.vote-dropdown{
+  padding: 5px 7px;
+  width: 246px;
+  margin: 15px;
+  border-left: 4px solid #739cda;
+  background: #fff;
+  font-size: 1.55em;
+  color: #656565;
+  font-weight: normal;
+  -webkit-box-shadow: 1px 1px 2px 
+}
+
+.polls-container{
+  text-align: center;
+}
+
+#myChart{
+  margin: 0 auto;
+}
+
+h4{
+  margin: 0 auto;
+}
+
+
+.form-container{
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
+
+}
+
+.create-poll{
+  ul{
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li{
+    margin: 5px;
+  }
+}
+
+#uname{
+  margin-left: 22px;
+}
+
+.add{
+  margin: 10px;
+}

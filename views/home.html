@@ -9,13 +9,14 @@
 
 
   <div class="title-wrapper">
-    <h1></h1>VoteNoWOmatic</h1> 
-    <h3>Public Polls</h3>
+    <h1>Vote-Now-Omatic</h1> 
+       {% if (username) %}
+      <h3/>Welcome, {{username}}</h3>
+      {% endif %}
+    
     <h6>Select a poll to vote or Sign up To create your own</h6>
   </div>
-     {% if (username) %}  
-      <h3/>Welcome: {{username}}</h3>
-     {% endif %}
+
   <div class-"home-poll-container">
     <ul class="poll-list">
        {% for item in listArray %}

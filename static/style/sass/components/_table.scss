@@ -1,0 +1,30 @@
+table{
+  // display: inline-block;
+  width: 100%;
+ border-collapse: collapse; 
+  background: #34495e; 
+  color: #f3f3f3;
+}
+
+td, th { 
+  padding: 8px; 
+  text-align: left; 
+  a{
+    color: #f3f3f3;
+    text-decoration: none;
+  }
+}
+
+// td{
+//   width: 100%;
+// }
+/* Zebra striping */
+tr:nth-of-type(odd) { 
+  background: #16a085; 
+}
+
+.mypolls-table{
+    width: 75%;
+  margin: 0 auto;
+}
+

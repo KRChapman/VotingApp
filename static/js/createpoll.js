@@ -2,16 +2,17 @@ let optionsBtn = document.querySelector(".options-button");
 let pollForm = document.querySelector(".create-poll");
 let ul = document.querySelector("ul");
 // let fragment = new DocumentFragment()
-let string = '<label for="options">Option:</label>' + '<input type= "text" name="options" class= "option-input">';
+let string = '<label for="options">Option: </label>' + '<input type= "text" name="options" class= "option-input">';
 
 // let current = window.location.href;
 // console.log(a);
 
-let expandingList = document.createElement('li')
-expandingList.innerHTML = string;
+
 optionsBtn.addEventListener('click', function (e) {
   e.preventDefault();
-  ul.insertAdjacentHTML("beforeend",string);
+  let expandingList = document.createElement('li')
+  expandingList.innerHTML = string;
+  ul.insertAdjacentElement("beforeend", expandingList);
  // ul.appendChild(expandingList);
 
 })
@@ -59,7 +60,7 @@ pollForm.addEventListener('submit', function (e) {
     headers: { "Content-Type": "application/json" } 
     
   }
-                                              //or text
+        //send poll data to server                  //or text
   fetch(url, reqObj).then(response => response.json()).then(data => {
     let formDiv = document.querySelector('.form-container');
     let form = document.querySelector('.create-poll');
@@ -69,7 +70,7 @@ pollForm.addEventListener('submit', function (e) {
     divBlock.classList.add("poll-link");
 
     let link = document.createElement('a');
-
+    
                 //entire link               //   /createpoll
     let index = window.location.href.indexOf(window.location.pathname);
     let startOfLinkHost = window.location.href.substring(0, index);

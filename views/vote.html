@@ -3,6 +3,40 @@
 
 {% block content %}
 
-<h2>Vote {{pollname}}</h2>
+<div class="polls-container">
 
+
+
+  <div class="dropdown">
+    
+    <select class="vote-dropdown" name="drop">
+      <option value="" selected="selected">Vote Options:</option>
+    </select>
+  </div>
+    <h4>
+      <span class="poll-name">{{pollname}}</span>
+    </h4>
+  <canvas id="myChart" width="500" height="500"></canvas>
+  {% if username %}
+
+
+
+
+ 
+    <div class="add-option-container">
+      <form action="" method="GET" class="add-poll">
+    
+        <label for="options" class="add">Add Option:</label>
+        <input type="text" name="options" class="option-input">
+    
+        <button type="submit" class="options-button">Add Options</button>
+    
+    
+      </form>
+    
+    
+    </div>
+    
+    {% endif %}
+</div>
 {% endblock %}

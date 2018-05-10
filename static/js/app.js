@@ -90,7 +90,7 @@ function renderMyPoll(data){
 
   let newDiv = document.createElement('div');
   let table = document.createElement('table');
-  newDiv.classList.add("mypolls");
+  newDiv.classList.add("mypolls-table");
 
   // create table structure dynamicly with data from fetch api call to database
   //then add new table elements as child to new created table elements

@@ -2,9 +2,9 @@
 
 
 {% block content %}
-<h2 class="poll-title">Create Poll</h2>
+
 <div class="form-container">
-  
+  <h2 class="poll-title">Create Poll</h2>
   <form action="/createpoll" method="post" class="create-poll">
     <label for="title">Title</label>
     <input type="text" name="title" id="uname" required>
@@ -16,7 +16,7 @@
     </ul>
 
   
-    <button class="options-button">Add Options</button>
+    <button class="options-button" class="form-btns">Add Options</button>
   
     <button type="submit">Submit</button>
   </form>

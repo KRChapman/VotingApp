@@ -14,13 +14,13 @@ const express = require('express'),
 
       {User} = require('./models/users'),
       {Poll} = require('./models/polls'),
-      {mongoose} = require('./db/mongoo');
+      {mongoose} = require('./db/mongoo'),
 
       url = require('url');
 
-      port = process.env.PORT || 3000;
+  
 // console.log(User);
-
+const port = process.env.PORT || 3000;
 app = express();
 let db = mongoose.connection;
 // res.sendFile(__dirname + '/index.html');});
@@ -57,7 +57,7 @@ app.use('/static', express.static(__dirname + '/static'));
 
 
 
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 
 
 let env = nunjucks.configure('views', {
@@ -435,17 +435,20 @@ app.use(function (err, req, res, next) {
 
 
      //for testing with nodemon it tries to connect more than once while testing
-  if (!module.parent) {
+  // if (!module.parent) {
  
    
-    app.listen(port);
-    console.log('server listening on port %s.', port);
-  }
+ 
+  // }
 
-  // var serve = app.listen(3000, function () {
-  //  var port = serve.address().port;
+  
+app.listen(port);
+console.log('server listening on port %s.', port);
 
-  //   console.log('Mongomart server listening on port %s.', port);
-  // });
+// app.set('port', (process.env.PORT || 3000));
 
+// // Start node server
+// app.listen(app.get('port'), function () {
+//   console.log('Node server is running on port ' + app.get('port'));
+// });
 

@@ -1,10 +1,7 @@
-
-
 let form = document.querySelector('.add-poll');
-
 let drop = document.querySelector('.vote-dropdown');
-//title
 document.addEventListener('DOMContentLoaded', renderPage);
+
 if(form){
   form.addEventListener('submit', submitEvent);
 }
@@ -14,15 +11,12 @@ drop.addEventListener('change', voteOption)
 function voteOption(e){
   e.preventDefault();
   let title = document.querySelector('.poll-name').textContent;
- // let title = document.querySelectorAll('.poll-name').textContent;
-
- let selected = this.options[this.selectedIndex].textContent;
-  console.log("e target", selected);
-  // title = encodeURIComponent(title);
-  // selectedOption = encodeURIComponent(selectedOption);
+  let selected = this.options[this.selectedIndex].textContent;
+  this.options.length = 0;
+  this.innerHTML = ' <option value="" selected="selected">Vote Options:</option>'
   let url = `/voteupdate/${selected}?pollname=${title}`;
   fetch(url).then(response => response.json()).then(data => renderChartDropDown(data));
-  //
+
 }
 
 function submitEvent(e){
@@ -40,10 +34,7 @@ function submitEvent(e){
 
 
 function renderPage(e){
-  // console.log("added", added);
   let title = document.querySelector('.poll-name');
-
-  console.log(title.textContent);
   dataForChart(title.textContent)
 }
 
@@ -61,7 +52,10 @@ function renderChartDropDown(data){
   let optionsArray = [];
   let dataArray = [];
   data.forEach(element => {
-    optionsArray.push(element.optionTitle);
+    if (optionsArray.indexOf(element.optionTitle) === -1){
+      optionsArray.push(element.optionTitle);
+    }
+    
     dataArray.push(element.Votes);
   });
 

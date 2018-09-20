@@ -7,7 +7,8 @@
   font-size: 1.55em;
   color: #656565;
   font-weight: normal;
-  -webkit-box-shadow: 1px 1px 2px 
+  -webkit-box-shadow: 1px 1px 2px;
+  box-shadow: 1px 1px 2px;
 }
 
 .polls-container{
@@ -49,4 +50,52 @@ h4{
 
 .add{
   margin: 10px;
+}
+
+.login-form{
+  width: 300px;
+  margin: 0 auto;
+
+  label {
+    margin-top: 10px;
+  }
+
+  form{
+    height: 400px;
+  }
+  input{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  span{
+    color: red;
+  }
+  ul{
+    
+    list-style-type: none;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 0;
+    width: 160px;
+  }
+  h6  {
+    margin: 0;
+     margin-bottom: 10px;
+  }
+  .larger{
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  li{
+    font-size: 12px;
+
+    margin-top: 3px;
+  
+  }
+}
+
+.login-header{
+
+text-align: center;
 }

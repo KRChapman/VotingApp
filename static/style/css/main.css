@@ -446,7 +446,8 @@ tr:nth-of-type(odd) {
   font-size: 1.55em;
   color: #656565;
   font-weight: normal;
-  -webkit-box-shadow: 1px 1px 2px; }
+  -webkit-box-shadow: 1px 1px 2px;
+  box-shadow: 1px 1px 2px; }
 
 .polls-container {
   text-align: center; }
@@ -475,6 +476,38 @@ h4 {
 
 .add {
   margin: 10px; }
+
+.login-form {
+  width: 300px;
+  margin: 0 auto; }
+  .login-form label {
+    margin-top: 10px; }
+  .login-form form {
+    height: 400px; }
+  .login-form input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%; }
+  .login-form span {
+    color: red; }
+  .login-form ul {
+    list-style-type: none;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 0;
+    width: 160px; }
+  .login-form h6 {
+    margin: 0;
+    margin-bottom: 10px; }
+  .login-form .larger {
+    font-size: 15px;
+    margin-bottom: 6px; }
+  .login-form li {
+    font-size: 12px;
+    margin-top: 3px; }
+
+.login-header {
+  text-align: center; }
 
 body {
   font-size: 20px; }

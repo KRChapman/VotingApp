@@ -5,8 +5,13 @@ Full stack vanilla Javascript application for User generated polls that can be s
 
 
 ## Getting Started
-
+###Log In
+If you want to play around right away
+email: example@gmail.com 
+password: example
 [Check it out here!](https://protected-fjord-13167.herokuapp.com)
+
+
 
 ## Using
 

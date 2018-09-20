@@ -2,7 +2,26 @@
 
 
 {% block content %}
-<h2>Login</h2>
+  </div>
+
+<div class="login-form">
+
+
+<h2 class="login-header">Login</h2>
+
+<div class="start-container">
+  <ul>
+    <li class="larger">Quick start to play around</li>
+    <li>Email: example@gmail.com</li>
+    <li>Password: example</li>
+  </ul>
+
+</div>
+
+<span>
+{{usernameError}}{{passwordError}}
+</span>
+
 <form action="" method="post">
   <label for="email" required="">Email</label>
   <input type="text" name="email">
@@ -11,6 +30,13 @@
 
   <button type="submit" class="form-btns">submit</button>
 </form>
-{{usernameError}}{{passwordError}}
-<!-- /login/{{pagename}} -->
+
+
+
+
+<div>
+
+</div>
+
+
 {% endblock %}

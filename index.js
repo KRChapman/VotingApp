@@ -184,7 +184,7 @@ function requiresLogin(req, res, next) {
         req.session.username = doc.username;
         req.session.userId = doc._id;
        
-        res.render('home', { username });
+        res.redirect('/home');
       }, e => {
         
         if(e.code === 11000){
@@ -289,20 +289,9 @@ function requiresLogin(req, res, next) {
   })
 router.get('/api/polls/:pollname', (req, res, next) => {
   let title = req.params.pollname;
- // let title = req.params.polls;
 
   Poll.find({ title: title}).then((doc) => {
-  
-    let pollObj = {
 
-    }
-    // for (const key in doc) {
-    //   if (object.hasOwnProperty(key)) {
-    //     pollObj.title = 
-        
-    //   }
-    // }
-//console.log("doc[0].options", doc[0].options);
     res.json(doc[0].options);
   }, function(e){
     console.log(`vote api ${e.message}`, e);

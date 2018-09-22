@@ -1,13 +1,9 @@
 const express = require('express'),
-      // cookieSession = require('cookie-session'),
       MongoClient = require('mongodb').MongoClient,
       bodyParser = require('body-parser'),
       assert = require('assert'),
       nunjucks = require('nunjucks'),
-      {checkForError, 
-      checkForAutherization} = require('./utils/helper.js'),
-      // mongoose = require('mongoose');
-
+      {checkForError} = require('./utils/helper.js'),
       session = require('express-session'),
       MongoStore = require('connect-mongo')(session),
       formidable = require('formidable'),
@@ -43,22 +39,10 @@ app.use(session({
   })
 }));
 
-// ttl: 14 * 24 * 60 * 60 // = 14 days. Default
-
-
-
-
-//use mostly i think?
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// can I use both?
 
 app.use('/static', express.static(__dirname + '/static'));
-
-
-
-// app.set('trust proxy', 1);
-
 
 let env = nunjucks.configure('views', {
   autoescape: true,
@@ -74,32 +58,17 @@ function requiresLogin(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
   } else {
-  // 
-    // var err = new Error('You must be logged in to view this page.');
-    // err.status = 401;
     res.redirect('/signup');
-    // return next(err);
   }
 }
 
-
- 
   router.get('/', (req,res) =>{
-
-
-  
-     res.redirect('/home');
-  
-    // res.render('home', { pagename: 'home' });
-  
-    
-  } )
+    res.redirect('/home');
+  })
 
   router.get('/home', function (req, res, next) {
-   let host = req.get('host');
- 
-   //localhost:3000/home
-  //  let username = (req.session.username == null) ? null : req.session.username;
+    let host = req.get('host');
+
     let username = req.session.username;
     let http = req.protocol;
 
@@ -140,8 +109,6 @@ function requiresLogin(req, res, next) {
     const username = req.body.username;
     const passwords = req.body.password;
 
-
-    // const emailError = (email === '') ? 'email field is blank' : '';
     const usernameError = (username === '')? 'user name field is blank': '';
     const passwordError = (passwords[0] !== passwords[1] || 
                          passwords[0] == "" && passwords[1] == "")? 'Passwords do not match' : '';
@@ -283,8 +250,38 @@ function requiresLogin(req, res, next) {
  //   console.log('first get', pollname);
     let pagename = `vote/${pollname}`;
     let username = req.session.username;
-    let jsFile = 'vote'
-    res.render('vote', { pagename: pagename, pollname: pollname, username, jsFile});
+    let jsFile = 'vote';
+    // let poll = new Poll()
+    // poll.username = username;
+    // poll.validateSync(function (err,doc){
+    //   console.log('errerr', err);
+    //   console.log('docdocdocdoc', doc);
+    // });
+
+    Poll.isAddOptionFormVisible(username, pollname, function(err, user){
+      console.log('errerr', err);
+      console.log('docdocdocdoc', user);
+      let validUser;
+      if(err){
+        next(err);
+      }
+      else if (user){
+        validUser = user.userName;
+      }
+      else{
+        validUser = user;
+      }
+      res.render('vote', { pagename: pagename, pollname: pollname, username : validUser, jsFile });
+    })
+
+
+     
+ 
+  
+
+    
+    
+ 
 
   })
 router.get('/api/polls/:pollname', (req, res, next) => {

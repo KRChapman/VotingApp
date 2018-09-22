@@ -1,22 +1,15 @@
+const canvasid = "myChart";
 let form = document.querySelector('.add-poll');
 let drop = document.querySelector('.vote-dropdown');
 document.addEventListener('DOMContentLoaded', renderPage);
-
-if(form){
-  form.addEventListener('submit', submitEvent);
-}
-
 drop.addEventListener('change', voteOption)
 
-function voteOption(e){
-  e.preventDefault();
-  let title = document.querySelector('.poll-name').textContent;
-  let selected = this.options[this.selectedIndex].textContent;
-  this.options.length = 0;
-  this.innerHTML = ' <option value="" selected="selected">Vote Options:</option>'
-  let url = `/voteupdate/${selected}?pollname=${title}`;
-  fetch(url).then(response => response.json()).then(data => renderChartDropDown(data));
-
+function renderPage() {
+  if (form) {
+    form.addEventListener('submit', submitEvent);
+  }
+  let title = document.querySelector('.poll-name');
+  dataForChart(title.textContent)
 }
 
 function submitEvent(e){
@@ -25,17 +18,13 @@ function submitEvent(e){
   
   let addedOption = e.target[0].value;
   let url = `/addoption/${addedOption}?pollname=${title}`;
+  drop.options.length = 0;
+  drop.innerHTML = ' <option value="" selected="selected">Vote Options:</option>'
   fetch(url).then(response => response.json()).then(data => {
     console.log(data) 
     renderChartDropDown(data)
   });
   
-}
-
-
-function renderPage(e){
-  let title = document.querySelector('.poll-name');
-  dataForChart(title.textContent)
 }
 
 function dataForChart(pollname){
@@ -47,21 +36,17 @@ function dataForChart(pollname){
 }
 
 function renderChartDropDown(data){
-  console.log(data);
- 
   let optionsArray = [];
   let dataArray = [];
   data.forEach(element => {
     if (optionsArray.indexOf(element.optionTitle) === -1){
       optionsArray.push(element.optionTitle);
-    }
-    
+    }  
     dataArray.push(element.Votes);
   });
 
   renderDrodown(optionsArray, dataArray);
   renderChart(optionsArray, dataArray);
-
 }
 
 function renderDrodown(optionsArray, dataArray){
@@ -70,19 +55,33 @@ function renderDrodown(optionsArray, dataArray){
   optionsArray.forEach((element, index) => {
     let title = element;
     let data = dataArray[index];
-    //${title}
- 
     dropdown.insertAdjacentHTML('afterbegin', `<option value=${data}>${title}</option>`);
   });
- 
+}
+
+function voteOption(e) {
+  e.preventDefault();
+  let title = document.querySelector('.poll-name').textContent;
+  let selected = this.options[this.selectedIndex].textContent;
+  this.options.length = 0;
+  this.innerHTML = ' <option value="" selected="selected">Vote Options:</option>'
+  let url = `/voteupdate/${selected}?pollname=${title}`;
+  if (window.myChart != null) {
+    let oldcanvasid = window.myChart.chart.ctx.canvas.id;
+    if (canvasid == oldcanvasid) {
+      window.myChart.destroy();
+    }
+  }
+  fetch(url).then(response => response.json()).then(data => renderChartDropDown(data));
+
 }
 
 
 function renderChart(optionsArray, dataArray){
 
+  let ctx = document.getElementById(canvasid).getContext('2d');
 
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var myChart = new Chart(ctx, {
+      window.myChart = new Chart(ctx, {
     type: 'pie',
     data: {
       labels: optionsArray,
@@ -120,7 +119,6 @@ function renderChart(optionsArray, dataArray){
       responsive: false,
       legend: {
         labels: {
-          // This more specific font property overrides the global property
           fontColor: 'blue'
         }
 

@@ -479,7 +479,7 @@ h4 {
 
 .login-form {
   width: 300px;
-  margin: 0 auto; }
+  margin: 60px auto; }
   .login-form label {
     margin-top: 10px; }
   .login-form form {
@@ -506,11 +506,28 @@ h4 {
     font-size: 12px;
     margin-top: 3px; }
 
+.signup-form-container {
+  margin: 60px auto;
+  width: 250px; }
+  .signup-form-container .input-container {
+    display: flex;
+    flex-wrap: wrap; }
+  .signup-form-container h2 {
+    text-align: center; }
+  .signup-form-container input {
+    margin-top: 8px;
+    margin-bottom: 4px; }
+  .signup-form-container label {
+    margin-top: 4px; }
+  .signup-form-container button {
+    margin-top: 10px; }
+
 .login-header {
   text-align: center; }
 
 body {
-  font-size: 20px; }
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif; }
 
 nav {
   background-color: #37474F;
@@ -540,20 +557,46 @@ nav {
   display: inline-block;
   width: 100%;
   text-align: center;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  height: 325px; }
   .title-wrapper h1 {
-    font-size: 5em;
-    margin-bottom: 0; }
+    font-size: 4.7em;
+    margin-bottom: 0;
+    margin-bottom: 0;
+    margin-top: .8em; }
 
 .poll-list {
   text-align: center;
   list-style-type: none;
   width: 50%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding: 0; }
   .poll-list li {
     font-size: 0.8em;
     margin: 2px;
     width: 100%;
-    background-color: #E0E0E0; }
+    background-color: #ffffff;
+    margin-top: 4px; }
+  .poll-list a {
+    color: #7d7d7d;
+    font-size: 26px;
+    text-decoration: none; }
+
+.home-title {
+  margin: 0 auto;
+  width: 759px;
+  color: #191919;
+  text-align: center;
+  text-decoration: underline; }
+
+@media only screen and (max-width: 470px) {
+  .title-wrapper h1 {
+    font-size: 3.5em;
+    margin-bottom: 0;
+    margin-bottom: 0;
+    margin-top: .7em; } }
+@media only screen and (max-width: 759px) {
+  .home-title {
+    width: 100%; } }
 
 /*# sourceMappingURL=main.css.map */

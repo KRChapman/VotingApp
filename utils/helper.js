@@ -14,16 +14,6 @@ let checkForError = (errorObj) => {
 }
 
 
-let checkForAutherization = (sessionObj) => {
-  //req.sessionID
-  console.log("sessionObj.id", sessionObj.id);
-  console.log("sessionObj.userId", sessionObj.userId);
-  //USE PROMISES
-  // Session.findOne({})
- 
-}
 
-
-
-module.exports = { checkForError, checkForAutherization};
+module.exports = { checkForError};
 

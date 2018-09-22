@@ -54,7 +54,7 @@ h4{
 
 .login-form{
   width: 300px;
-  margin: 0 auto;
+  margin: 60px auto;
 
   label {
     margin-top: 10px;
@@ -94,6 +94,32 @@ h4{
   
   }
 }
+
+.signup-form-container{
+  margin: 60px auto;
+  width: 250px;
+  .input-container{
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+  h2{
+    text-align: center;
+  }
+  input{
+    margin-top: 8px;
+    margin-bottom: 4px;
+
+  }
+  label{
+    margin-top: 4px;
+  }
+  button{
+    margin-top: 10px;
+  }
+}
+
+
 
 .login-header{
 

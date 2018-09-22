@@ -23,11 +23,39 @@ let PollSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 1
+    minlength: 1,
+    validate: {
+      validator: function (v, cb) {
+        Poll.findOne({ userName: v }, function (err, docs) {
+          return cb(err, docs);
+        });
+      },
+      message: `poll not found with username`
+    }
   },
 
 
+
+
 });
+
+PollSchema.statics.isAddOptionFormVisible = function (username, title, callback){
+
+  this.findOne({ userName: username, title })
+    .exec(function (err, user) {
+
+      if (err) {
+        return callback(err)
+      }
+      if (user){
+        return callback(null, user);
+      }
+      else{
+        return callback(null, user);
+      }
+    })
+    
+}
 
 
 let Poll = mongoose.model('Poll', PollSchema);

@@ -53,10 +53,6 @@ function showMyPolls(){
 
 }
 function removeRow() {
-  //the element is passed in with all its properties added from above
-  console.log('this', this.title);
-  console.log('this text', this.table[this.index + 1].textContent);
-  
   let url = '/deletepoll'
   let postBody = {
     title: this.title,

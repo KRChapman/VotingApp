@@ -4,8 +4,6 @@ let ul = document.querySelector("ul");
 // let fragment = new DocumentFragment()
 let string = '<label for="options">Option: </label>' + '<input type= "text" name="options" class= "option-input">';
 
-// let current = window.location.href;
-// console.log(a);
 
 
 optionsBtn.addEventListener('click', function (e) {
@@ -13,8 +11,6 @@ optionsBtn.addEventListener('click', function (e) {
   let expandingList = document.createElement('li')
   expandingList.innerHTML = string;
   ul.insertAdjacentElement("beforeend", expandingList);
- // ul.appendChild(expandingList);
-
 })
 
 
@@ -65,30 +61,17 @@ pollForm.addEventListener('submit', function (e) {
     let formDiv = document.querySelector('.form-container');
     let form = document.querySelector('.create-poll');
     let pollTitle = document.querySelector(".poll-title");
-
     let divBlock = document.createElement('div');
     divBlock.classList.add("poll-link");
-
     let link = document.createElement('a');
-    
-                //entire link               //   /createpoll
     let index = window.location.href.indexOf(window.location.pathname);
     let startOfLinkHost = window.location.href.substring(0, index);
-    console.log("startOfLinkHost", startOfLinkHost);
-
     let dataLink = `${startOfLinkHost}/vote/${data.title}?username=${data.userName}`;
-    console.log("startOfLinkHost", dataLink);
     link.textContent = dataLink;
     link.setAttribute('href', dataLink);
-
-    divBlock.appendChild(link);
-
-   
+    divBlock.appendChild(link); 
     pollTitle.textContent = "Poll Link"
     let replacedNode = formDiv.replaceChild(divBlock, form);
-    console.log(data.userId);
-
-
   })
 
 

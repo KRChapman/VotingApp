@@ -4,6 +4,7 @@
 {% block content %}
 
 <div class="form-container">
+  
   <h2 class="poll-title">Create Poll</h2>
   <form action="/createpoll" method="post" class="create-poll">
     <label for="title">Title</label>
@@ -14,11 +15,10 @@
           <input type="text" name="options" class= "option-input">
       </li>
     </ul>
-
-  
     <button class="options-button" class="form-btns">Add Options</button>
   
     <button type="submit">Submit</button>
   </form>
 </div>
+<script src="/../static/js/createpoll.js"></script>
 {% endblock %}

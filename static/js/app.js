@@ -18,33 +18,22 @@ function showMyPolls(){
 
   let reqObj = {
     credentials: 'include',
-    //cors: "no-cors",
     cors: 'cors',
     method: 'POST',
     body: jsonData,
     headers: { "Content-Type": "application/json" }
-   // { 'Content-type': 'text/plain' }
   }
 
- 
   fetch(url, reqObj).then(response => response.json()).then(data =>{
-
     renderMyPoll(data);
 
-  
      let tableRows = document.querySelectorAll("tr");
 
      document.querySelectorAll(".delete-btn").forEach(function(element, index){
        element.index = index;
-     
        element.username = data[index].userName;
        element.table = tableRows;
-
-       // probably not best becaue it relies on order of database staying the same
-       // prob would be better to get text cotent this.table[this.index + 1].textContent)
        element.title = data[index].title;
-       // search for first | with index of then cut out rest
-
        element.addEventListener('click', removeRow);
 
      })
@@ -69,21 +58,14 @@ function removeRow() {
     headers: { "Content-Type": "application/json" }
   
   }
-
   fetch(url, reqObj);
-
-
-
-
   this.table[this.index + 1].remove();
-
 }
 
 
 function renderMyPoll(data){
   let divContainer = document.querySelector('.content-container');
   let divMyPoll = document.querySelector('.mypolls');
-
   let newDiv = document.createElement('div');
   let table = document.createElement('table');
   newDiv.classList.add("mypolls-table");
@@ -97,13 +79,9 @@ function renderMyPoll(data){
   elementsObj.tableData.forEach(element => {
     table.insertAdjacentElement('beforeend', element);
   });
-
   newDiv.appendChild(table);
-
   let replacedNode = divContainer.replaceChild(newDiv, divMyPoll);
-
 }
-
 
 function createTableHeadAndData(data){
 
@@ -118,8 +96,6 @@ function createTableHeadAndData(data){
     tableRowData.insertAdjacentHTML('beforeend', `<td><button class="delete-btn">Delete</button></td>`);
     tableRowData.insertAdjacentHTML('beforeend', `<td><a href=${link}>${data[i].title}</a></td>`);
     
-    
-  
     for (let j = 0; j < data[i].options.length; j++) { 
       longString += ` | ${data[i].options[j].optionTitle} Votes: ${data[i].options[j].Votes}`
       
@@ -129,23 +105,19 @@ function createTableHeadAndData(data){
     tableRowData = null;
     longString = null;
   }
-  //console.log(elementsArray);
+
   let elementsObj = {
     tableHead: tableRowHead,
     tableData: elementsArray
   }
   return elementsObj;
-  // tableRowData.insertAdjacentElement('beforeend', tableRowData);
 }
 
 function linkToPoll (data){
-  
   let index = window.location.href.indexOf(window.location.pathname);
   let startOfLinkHost = window.location.href.substring(0, index);
-  // console.log("startOfLinkHost", startOfLinkHost);
   let title = encodeURIComponent(data.title) 
   let dataLink = `${startOfLinkHost}/vote/${title}?username=${data.userName}`;
-
 
   return dataLink;
 }

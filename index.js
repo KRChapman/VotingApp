@@ -1,30 +1,20 @@
 const express = require('express'),
-      MongoClient = require('mongodb').MongoClient,
+
       bodyParser = require('body-parser'),
       assert = require('assert'),
       nunjucks = require('nunjucks'),
       {checkForError} = require('./utils/helper.js'),
       session = require('express-session'),
       MongoStore = require('connect-mongo')(session),
-      formidable = require('formidable'),
 
       {User} = require('./models/users'),
       {Poll} = require('./models/polls'),
-      {mongoose} = require('./db/mongoo'),
+      {mongoose} = require('./db/mongoo');
 
-      url = require('url');
 
-  
-// console.log(User);
 const port = process.env.PORT || 3000;
 app = express();
 let db = mongoose.connection;
-// res.sendFile(__dirname + '/index.html');});
-// app.get('/', function (req, res) {
-//   res.sendFile(__dirname + '/index.html');
-// });
-// app.use(express.static(__dirname + 'public'));
-// app.listen(3000);
 
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
@@ -90,13 +80,7 @@ function requiresLogin(req, res, next) {
 
     })
 
-    
-
   });
-
-
-
-
 
   router.get('/signup', (req, res) => {
     
@@ -118,25 +102,6 @@ function requiresLogin(req, res, next) {
 
   
     if (!error ){
-
-      // let userData = {
-      //   username,
-      //   password: passwords[0]
-      // }
-      // User.create(userData, (error, user) =>{
-      //   if (error){
-      //        if(error.code === 11000){
-      
-      //         errors.usernameError = 'duplicate username'
-      //         return res.render('signup', errors);
-      //       }
-      //     return next(error);
-      //   } else {
-      //     req.session.userId = user._id;
-      //     res.render('home', { username });
-      //     // return res.json(user);
-      //   }
-      // });
 
       //this way you could pass the object to a function before saving
       // or modify it in other ways before saving
@@ -198,25 +163,21 @@ function requiresLogin(req, res, next) {
     let pagename = req.params.pagename;
     pagename = 'vote/' + pagename;
  
-   // ,{ pagename: pagename }
+
     res.render('login');
-    //res.render('login');
-  });///:pagename
+
+  });
   router.post('/login/:url(*)', (req, res) => {
     let pagename = req.params.url;
     const email = req.body.email;
     const username = req.body.username;
     const password = req.body.password;
-    // console.log("pagename post", pagename);
-    let test = pagename === ('signup' || "") ? 'home' : pagename;
-    
-    // const passwordError = (passwords[0] !== passwords[1] ||
-    //   passwords[0] == "" && passwords[1] == "") ? 'Passwords do not match' : '';
-    const usernameError = (username === '') ? 'user name field is blank' : '';
- 
 
-    
+    let test = pagename === ('signup' || "") ? 'home' : pagename;
+
+    const usernameError = (username === '') ? 'user name field is blank' : '';
     const errors = { usernameError};
+
     if (!checkForError(errors)) {
       let pagenameTest = '/' + test;
       
@@ -244,19 +205,12 @@ function requiresLogin(req, res, next) {
     }
   });
 
-//////////////////////////////////////////////////////////////
+
   router.get('/vote/:pollname',function goToPollPage(req,res) {
     const pollname = req.params.pollname;
- //   console.log('first get', pollname);
     let pagename = `vote/${pollname}`;
     let username = req.session.username;
     let jsFile = 'vote';
-    // let poll = new Poll()
-    // poll.username = username;
-    // poll.validateSync(function (err,doc){
-    //   console.log('errerr', err);
-    //   console.log('docdocdocdoc', doc);
-    // });
 
     Poll.isAddOptionFormVisible(username, pollname, function(err, user){
       console.log('errerr', err);
@@ -273,17 +227,8 @@ function requiresLogin(req, res, next) {
       }
       res.render('vote', { pagename: pagename, pollname: pollname, username : validUser, jsFile });
     })
-
-
-     
- 
-  
-
-    
-    
- 
-
   })
+
 router.get('/api/polls/:pollname', (req, res, next) => {
   let title = req.params.pollname;
 
@@ -329,53 +274,43 @@ router.get('/voteupdate/:selected', function(req, res, next) {
 })
 
 router.get('/createpoll', requiresLogin, (req, res, next) => {
-//  requiresLogin(req, res, next);
-  let jsFile = "createpoll";
+
+
   let username = req.session.username;
-  res.render('createpoll', {username, jsFile});
+  res.render('createpoll', {username});
 
 });
 router.post('/createpoll', (req, res)  => {
 
  let options = req.body.options;
-  let userName = req.session.username;
+ let userName = req.session.username;
 
 
+  let userPoll = new Poll({
+    title: req.body.title,
+    userName
+  });
   
-
-
-    let userPoll = new Poll({
-      title: req.body.title,
-      userName
-    });
-   
-    options.forEach(element => {
-      userPoll.options.push({ optionTitle: element })
-    });
+  options.forEach(element => {
+    userPoll.options.push({ optionTitle: element })
+  });
+  
+  userPoll.save().then(doc => {
     
-    userPoll.save().then(doc => {
-     
-      let resObj ={
-        title: doc.title,  //req.body.title,
-        userName
-      }
+    let resObj ={
+      title: doc.title,  //req.body.title,
+      userName
+    }
 
-      res.send(resObj);
-      // res.json(linkToPoll)
-    }, e => console.log(e))
+    res.send(resObj);
+  }, e => console.log(e))
  
-
-
-
-
 })
 
 
 router.post('/mypolls', (req, res) =>{
   let username = req.session.username;
   let bod = req.body;
-  // console.log(username);
-  // console.log(bod);
 
   Poll.find({ userName: username}).then(doc => res.send(doc));
 })
@@ -402,39 +337,24 @@ router.get('/logout', (req, res) => {
 
 })
 
-//app.use('/createpoll', requiresLogin);
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('File Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handler
-// define as the last app.use callback
 app.use(function (err, req, res, next) {
  
   res.status(err.status || 500).send(err.message);
 
 });
 
-
-
      //for testing with nodemon it tries to connect more than once while testing
   // if (!module.parent) {
  
-   
- 
   // }
 
-  
 app.listen(port);
 console.log('server listening on port %s.', port);
 
-// app.set('port', (process.env.PORT || 3000));
-
-// // Start node server
-// app.listen(app.get('port'), function () {
-//   console.log('Node server is running on port ' + app.get('port'));
-// });
 

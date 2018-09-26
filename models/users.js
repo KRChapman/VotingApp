@@ -38,9 +38,6 @@ UserSchema.pre('save', function (next) {
   })
 });
 
-//authenticate input against database
-
-
 UserSchema.statics.authenticate = function (email, password, callback) {
   
   this.findOne({ email: email })

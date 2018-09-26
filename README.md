@@ -6,7 +6,7 @@ Full stack vanilla Javascript application for User generated polls that can be s
 
 ## Getting Started
 
-###Log In
+### Log In
 
 If you want to play around right away
 * email: example@gmail.com 

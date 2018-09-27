@@ -597,7 +597,7 @@ nav {
   text-align: center;
   text-decoration: underline; }
 
-@media only screen and (max-width: 470px) {
+@media only screen and (max-width: 792px) {
   .title-wrapper h1 {
     font-size: 3.5em;
     margin-bottom: 0;

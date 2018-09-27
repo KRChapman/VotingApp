@@ -20,18 +20,3 @@ const datas = [{args: {usernameError: '', passwordError: ''}, result: false },
 
 
   })
-
-/* 
-suite("my test suite", function () {
-  var data = ["foo", "bar", "buzz"];
-  var testWithData = function (dataItem) {
-    return function () {
-      console.log(dataItem);
-      //Here do your test.
-    };
-  };
-
-  data.forEach(function (dataItem) {
-    test("data_provider test", testWithData(dataItem));
-  });
-}); */

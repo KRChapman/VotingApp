@@ -455,6 +455,12 @@ tr:nth-of-type(odd) {
 #myChart {
   margin: 0 auto; }
 
+.createpoll-error {
+  text-align: center; }
+
+.signup-error {
+  text-align: center; }
+
 h4 {
   margin: 0 auto; }
 
@@ -544,12 +550,14 @@ nav {
     text-decoration: none; }
   nav > :last-child {
     color: #FFEBEE;
-    margin-left: 100px;
+    margin-left: 90px;
+    margin-right: 10px;
     position: absolute;
     right: 2px; }
   nav > :first-child {
     position: absolute;
-    left: 2px; }
+    left: 2px;
+    margin-left: 10px; }
 
 .title-wrapper {
   background-color: #212121;

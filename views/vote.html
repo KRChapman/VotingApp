@@ -17,14 +17,14 @@
       <span class="poll-name">{{pollname}}</span>
     </h4>
   <canvas id="myChart" width="500" height="500"></canvas>
-  {% if username %}
+  {% if validUser %}
 
 
 
 
  
     <div class="add-option-container">
-      <form action="" method="GET" class="add-poll">
+      <form action="" method="POST" class="add-poll">
     
         <label for="options" class="add">Add Option:</label>
         <input type="text" name="options" class="option-input">
@@ -39,4 +39,5 @@
     
     {% endif %}
 </div>
+<script src="/../static/js/votes.js"></script>
 {% endblock %}

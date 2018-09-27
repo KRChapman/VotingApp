@@ -19,14 +19,6 @@ let PollSchema = new mongoose.Schema({
     required: true,
     trim: true,
     minlength: 1,
-    validate: {
-      validator: function (v, cb) {
-        Poll.findOne({ userName: v }, function (err, docs) {
-          return cb(err, docs);
-        });
-      },
-      message: `poll not found with username`
-    }
   },
 
 });

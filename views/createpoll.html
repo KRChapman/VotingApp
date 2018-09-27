@@ -12,7 +12,7 @@
     <ul>
       <li>
           <label for="options">Option:</label>
-          <input type="text" name="options" class= "option-input">
+          <input type="text" name="options" class= "option-input" required>
       </li>
     </ul>
     <button class="options-button" class="form-btns">Add Options</button>
@@ -20,5 +20,8 @@
     <button type="submit">Submit</button>
   </form>
 </div>
-<script src="/../static/js/createpoll.js"></script>
+
+<div class="createpoll-error"></div>
+
+<script src="/../static/js/createpolls.js"></script>
 {% endblock %}
